@@ -6,4 +6,4 @@ services:
     image: spring-petclinic  # image name
     container_name: spring-petclinic-container  # container name
     ports:
-      - "8000:8000"  # port mapping
+      - "8008:8008"  # port mapping
