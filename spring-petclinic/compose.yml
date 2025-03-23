@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    image: spring-petclinic  # image name
+    container_name: spring-petclinic-container  # container name
+    ports:
+      - "8000:8000"  # port mapping
