@@ -4,7 +4,7 @@ build:
   services:
     - docker:20.10.16-dind
   script:
-    #- echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-    #- docker build -t $CI_REGISTRY/group/project/image:latest .
-    #- docker push $CI_REGISTRY/group/project/image:latest
-    - echo " $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker build -t  $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push  $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - echo " $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
