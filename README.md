@@ -17,4 +17,11 @@ This project sets up a CI/CD pipeline to build and deploy the Spring PetClinic S
     
     You can then access the Petclinic at http://localhost:8008/.
 *deplyment.yml
+
+
+
 *.gitlab-ci.yml
+
+
+
+https://gitlab.com/cicd5930813/spring-petclinic
