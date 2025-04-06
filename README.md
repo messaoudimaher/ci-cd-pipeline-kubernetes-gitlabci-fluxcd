@@ -16,3 +16,5 @@ This project sets up a CI/CD pipeline to build and deploy the Spring PetClinic S
     docker-compose up -d
     
     You can then access the Petclinic at http://localhost:8008/.
+*deplyment.yml
+*.gitlab-ci.yml
