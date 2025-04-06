@@ -1,10 +1,32 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  KUBE_CONTEXT: "default"  # Change to your Kubernetes context if needed
+
 build:
   image: docker:20.10.16
   stage: build
   services:
     - docker:20.10.16-dind
+  
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
-    - docker build -t  $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA -f spring-petclinic/dockerfile .
-    - docker push  $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - echo " $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - echo "Image pushed:" " $IMAGE_TAG"
+
+deploy:  
+  image: registry.gitlab.com/cicd5930813/kubectl:21011188
+  stage: deploy
+  script:
+    - kubectl config use-context $KUBE_CONTEXT
+    # Update the Kubernetes deployment YAML with the new image tag
+    - sed -i "s|IMAGE_PLACEHOLDER|$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA|g" kustomize/deployment.yaml
+    # Apply the updated deployment to Kubernetes
+    - kubectl apply -f kustomize/deployment.yaml
+    # Check rollout status of the deployment
+    - kubectl get all -A
+
