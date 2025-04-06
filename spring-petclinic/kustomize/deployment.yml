@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-petclinic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-petclinic
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+        - name: spring-petclinic
+          image: IMAGE_PLACEHOLDER  # This will be replaced by the pipeline
+          ports:
+            - containerPort: 8008
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-petclinic-service
+spec:
+  selector:
+    app: spring-petclinic
+  ports:
+    - protocol: TCP
+      port: 8008
+      targetPort: 8008
